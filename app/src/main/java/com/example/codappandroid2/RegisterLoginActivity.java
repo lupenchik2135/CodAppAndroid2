@@ -1,6 +1,7 @@
 package com.example.codappandroid2;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -32,7 +33,6 @@ public class RegisterLoginActivity extends AppCompatActivity {
 
     ConstraintLayout rgWindow;
     private ClientsDAO clientsDAO;
-    private Client loggedClient;
     private TextView clientText;
     private ListView clientTextList;
 
@@ -67,6 +67,12 @@ public class RegisterLoginActivity extends AppCompatActivity {
                 showRegisterWindow();
             }
         });
+        buttonLogIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSignInWindow();
+            }
+        });
         buttonExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +84,60 @@ public class RegisterLoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void showSignInWindow() {
+        AlertDialog.Builder dialogue = new AlertDialog.Builder(this);
+        dialogue.setTitle("Войти");
+        dialogue.setMessage("Введите данные для входа");
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View logInWindow = inflater.inflate(R.layout.log_in_window, null);
+        dialogue.setView(logInWindow);
+        final EditText login = logInWindow.findViewById(R.id.loginField);
+        final EditText password = logInWindow.findViewById(R.id.passwordField);
+
+        dialogue.setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        dialogue.setPositiveButton("Войти", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                if (TextUtils.isEmpty(login.getText().toString())) {
+                    Snackbar.make(rgWindow, "Введите логин", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.getText().toString().length() < 6) {
+                    Snackbar.make(rgWindow, "Введите пароль, который более 6 символов!", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                //регистрация пользователя
+                Client loginClient = clientsDAO.loginClient(login.getText().toString(), password.getText().toString());
+
+                if (loginClient == null) {
+                    Snackbar.make(rgWindow, "Ошибка!", Snackbar.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    Snackbar.make(rgWindow, "Добро пожаловать!" + loginClient.getId(), Snackbar.LENGTH_SHORT).show();
+                    // Создаем Intent
+                    Intent intent = new Intent(RegisterLoginActivity.this, AccountActivity.class);
+
+                    // Передаем dbConnection и Client
+                    intent.putExtra("dbConnection", dbConnection);
+                    intent.putExtra("Client", loginClient);
+                    startActivity(intent);
+                    finish();
+                }
+
+
+            }
+        });
+
+        dialogue.show();
     }
 
     private void showRegisterWindow() {
@@ -117,6 +177,7 @@ public class RegisterLoginActivity extends AppCompatActivity {
                     return;
                 } else {
                     Snackbar.make(rgWindow, "Пользователь добавлен!", Snackbar.LENGTH_SHORT).show();
+                    startActivity(new Intent(RegisterLoginActivity.this, AccountActivity.class));
                 }
 
 

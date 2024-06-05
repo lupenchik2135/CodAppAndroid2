@@ -88,19 +88,49 @@ public class ClientsDAO {
             return false;
         }
     }
-    public boolean loginClient(String login, String password) {
-        boolean result = false;
+//    public boolean loginClient(String login, String password) {
+//        boolean result = false;
+//
+//        try {
+//            String query = "SELECT loginClient(?, ?)";
+//            PreparedStatement ps = con.prepareStatement(query);
+//            ps.setString(1, login);
+//            ps.setString(2, password);
+//
+//            ResultSet resultSet = ps.executeQuery();
+//            if (resultSet.next()) {
+//                result = resultSet.getBoolean(1);
+//            }
+//
+//            resultSet.close();
+//            ps.close();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return result;
+//    }
+
+    public Client loginClient(String login, String password) {
+        Client client = new Client();;
 
         try {
-            String query = "SELECT loginClient(?, ?)";
+//            String query = "SELECT id, login, password, totalSpent, bonusStatus, bonuses, managerId FROM loginclientfunction(?, ?)";
+            String query = "SELECT id, login, password, totalSpent, bonuses, managerId FROM loginclientfunction(?, ?)";
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, login);
             ps.setString(2, password);
 
             ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
-                result = resultSet.getBoolean(1);
-            }
+                client.setId(resultSet.getInt("id"));
+                client.setLogin(login);
+                client.setPassword(password);
+                client.setTotalSpent(resultSet.getFloat("totalSpent"));
+//                client.setBonusStatus(resultSet.getString("bonusStatus"));
+                client.setBonuses(resultSet.getFloat("bonuses"));
+                client.setManagerId(resultSet.getInt("managerId"));
+            }else client = null;
 
             resultSet.close();
             ps.close();
@@ -108,9 +138,8 @@ public class ClientsDAO {
             e.printStackTrace();
         }
 
-        return result;
+        return client;
     }
-
     //удаление
     public void deleteClient(int id) {
         try {
