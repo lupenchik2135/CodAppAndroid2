@@ -35,12 +35,12 @@ public class IndividualsDAO {
         return result;
     }
 
-    //получение Individual по id
-    public Individuals getIndividual(int id) {
+    //получение Individual по clientid
+    public Individuals getIndividualByClient(int clientid) {
         Individuals result = null;
         try {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM individuals WHERE id=?");
-            ps.setInt(1, id);
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM individuals WHERE clientid=?");
+            ps.setInt(1, clientid);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

@@ -19,7 +19,7 @@ public class LegalEntitiesDAO {
     }
 
     //получение LegalEntities из строки ResultSet
-    private LegalEntities getIndividualFromRS(ResultSet rs) throws SQLException {
+    private LegalEntities getLegalEntityFromRS(ResultSet rs) throws SQLException {
         LegalEntities result = new LegalEntities();
 
         result.setId(rs.getInt("id"));
@@ -31,22 +31,22 @@ public class LegalEntitiesDAO {
 //        result.setLegalAddress(rs.getString("legalAddress"));
 //        result.setRealAddress(rs.getString("realAddress"));
         result.setContactEmail(rs.getString("contactEmail"));
-        result.setContactName(rs.getString("contactNumber"));
+        result.setContactNumber(rs.getString("contactNumber"));
         result.setClientID(rs.getInt("clientID"));
 
         return result;
     }
 
     //получение LegalEntities по id
-    public LegalEntities getLegalEntity(int id) {
+    public LegalEntities getLegalEntityByClient(int clientid) {
         LegalEntities result = null;
         try {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM individuals WHERE id=?");
-            ps.setInt(1, id);
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM legalentities WHERE clientid=?");
+            ps.setInt(1, clientid);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                result = getIndividualFromRS(rs);
+                result = getLegalEntityFromRS(rs);
             }
             ps.close();
         } catch (SQLException e) {
@@ -62,7 +62,7 @@ public class LegalEntitiesDAO {
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM individuals");
             while (rs.next()) {
-                result.add(getIndividualFromRS(rs));
+                result.add(getLegalEntityFromRS(rs));
             }
             rs.close();
         } catch (SQLException e) {
@@ -73,16 +73,17 @@ public class LegalEntitiesDAO {
     }
 
     // создание/обновление договора в базе
-    public boolean registerLegalEntity(String FirstName, String SecondName, String ThirdName, String Email, int ClientID) {
+//    public boolean registerLegalEntity(String companyName, String contactName, String iNN, String oGRN, String license, String legalAddress, String realAddress, String contactEmail, String contactNumber, int clientID) {
+        public boolean registerLegalEntity(String companyName, String contactName, String iNN, String contactEmail, String contactNumber, int clientID) {
         try {
-//            CallableStatement cs = con.prepareCall("call createindividualprocedure(?, ?, ?, ?, ?, ?, ?)");
-            CallableStatement cs = con.prepareCall("call createindividualprocedure(?, ?, ?, ?, ?, ? )");
-            cs.setString(1, FirstName);
-            cs.setString(2, SecondName);
-            cs.setString(3, ThirdName);
-            cs.setString(4, Email);
-            cs.setString(5, Email);
-            cs.setInt(6, ClientID);
+//            CallableStatement cs = con.prepareCall("call createindividualprocedure(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            CallableStatement cs = con.prepareCall("call createlegalentityprocedure(?, ?, ?, ?, ?, ? )");
+            cs.setString(1, companyName);
+            cs.setString(2, contactName);
+            cs.setString(3, iNN);
+            cs.setString(4, contactEmail);
+            cs.setString(5, contactNumber);
+            cs.setInt(6, clientID);
             cs.execute();
             //             Получить уведомления
             SQLWarning warning = cs.getWarnings();

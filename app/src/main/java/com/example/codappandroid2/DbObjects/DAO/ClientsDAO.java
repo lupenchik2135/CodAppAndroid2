@@ -88,29 +88,6 @@ public class ClientsDAO {
             return false;
         }
     }
-//    public boolean loginClient(String login, String password) {
-//        boolean result = false;
-//
-//        try {
-//            String query = "SELECT loginClient(?, ?)";
-//            PreparedStatement ps = con.prepareStatement(query);
-//            ps.setString(1, login);
-//            ps.setString(2, password);
-//
-//            ResultSet resultSet = ps.executeQuery();
-//            if (resultSet.next()) {
-//                result = resultSet.getBoolean(1);
-//            }
-//
-//            resultSet.close();
-//            ps.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return result;
-//    }
-
     public Clients loginClient(String login, String password) {
         Clients clients = new Clients();;
 

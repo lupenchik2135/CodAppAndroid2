@@ -21,6 +21,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.codappandroid2.DbObjects.Clients;
 import com.example.codappandroid2.DbObjects.DAO.ClientsDAO;
+import com.example.codappandroid2.DbObjects.DAO.IndividualsDAO;
+import com.example.codappandroid2.DbObjects.DAO.LegalEntitiesDAO;
 import com.example.codappandroid2.DbObjects.Individuals;
 import com.example.codappandroid2.DbObjects.LegalEntities;
 import com.google.android.material.snackbar.Snackbar;
@@ -125,13 +127,20 @@ public class RegisterLoginActivity extends AppCompatActivity {
                     Snackbar.make(rgWindow, "Ошибка!", Snackbar.LENGTH_SHORT).show();
                     return;
                 } else {
+                    IndividualsDAO individualsDAO = new IndividualsDAO(dbConnection.getConnection());
+                    LegalEntitiesDAO legalEntitiesDAO = new LegalEntitiesDAO(dbConnection.getConnection());
+                    Individuals individualData = individualsDAO.getIndividualByClient(loginClients.getId());
+                    LegalEntities legalEntityData = legalEntitiesDAO.getLegalEntityByClient(loginClients.getId());
+
                     Snackbar.make(rgWindow, "Добро пожаловать!" + loginClients.getId(), Snackbar.LENGTH_SHORT).show();
                     // Создаем Intent
                     Intent intent = new Intent(RegisterLoginActivity.this, AccountActivity.class);
 
                     // Передаем dbConnection и Client
                     intent.putExtra("dbConnection", dbConnection);
-                    intent.putExtra("Client", loginClients);
+                    intent.putExtra("clientData", loginClients);
+                    intent.putExtra("individualData", individualData);
+                    intent.putExtra("legalEntityData", legalEntityData);
                     startActivity(intent);
                     finish();
                 }
@@ -185,6 +194,7 @@ public class RegisterLoginActivity extends AppCompatActivity {
                     intent.putExtra("dbConnection", dbConnection);
                     intent.putExtra("clientData", clientData);
                     startActivity(intent);
+                    finish();
                 }
 
 

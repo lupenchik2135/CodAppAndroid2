@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rgLegalEntityWindow"
+    app:cardElevation="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/companyNameField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Название компании"
+                android:inputType="text"
+                android:text=""
+                android:textColor="@color/design_default_color_primary"
+                android:textColorHint="@color/design_default_color_primary_dark"
+                android:textSize="10sp"
+
+                />
+
+            <EditText
+                android:id="@+id/contactNameField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Имя контактного лица"
+                android:inputType="text"
+                android:text=""
+                android:textColor="@color/design_default_color_primary"
+                android:textColorHint="@color/design_default_color_primary_dark"
+                android:textSize="10sp"
+
+                />
+            <EditText
+                android:id="@+id/innField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="ИНН"
+                android:inputType="text"
+                android:text=""
+                android:textColor="@color/design_default_color_primary"
+                android:textColorHint="@color/design_default_color_primary_dark"
+                android:textSize="10sp"
+                />
+<!--            <EditText-->
+<!--                android:id="@+id/ogrnField"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="ОГРН"-->
+<!--                android:inputType="text"-->
+<!--                android:text=""-->
+<!--                android:textColor="@color/design_default_color_primary"-->
+<!--                android:textColorHint="@color/design_default_color_primary_dark"-->
+<!--                android:textSize="10sp"-->
+<!--                />-->
+<!--            <EditText-->
+<!--                android:id="@+id/licenseField"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Лицензия"-->
+<!--                android:inputType="text"-->
+<!--                android:text=""-->
+<!--                android:textColor="@color/design_default_color_primary"-->
+<!--                android:textColorHint="@color/design_default_color_primary_dark"-->
+<!--                android:textSize="10sp"-->
+<!--                />-->
+<!--            <EditText-->
+<!--                android:id="@+id/legalAddressField"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Юридический адресс"-->
+<!--                android:inputType="text"-->
+<!--                android:text=""-->
+<!--                android:textColor="@color/design_default_color_primary"-->
+<!--                android:textColorHint="@color/design_default_color_primary_dark"-->
+<!--                android:textSize="10sp"-->
+<!--                />-->
+<!--            <EditText-->
+<!--                android:id="@+id/realAddressField"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Физический адрес"-->
+<!--                android:inputType="text"-->
+<!--                android:text=""-->
+<!--                android:textColor="@color/design_default_color_primary"-->
+<!--                android:textColorHint="@color/design_default_color_primary_dark"-->
+<!--                android:textSize="10sp"-->
+<!--                />-->
+            <EditText
+                android:id="@+id/contactEmailField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Почта контактного лица"
+                android:inputType="textEmailAddress"
+                android:text=""
+                android:textColor="@color/design_default_color_primary"
+                android:textColorHint="@color/design_default_color_primary_dark"
+                android:textSize="10sp"
+                />
+            <EditText
+                android:id="@+id/contactNumberField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Номер контактного лица"
+                android:inputType="phone"
+                android:text=""
+                android:textColor="@color/design_default_color_primary"
+                android:textColorHint="@color/design_default_color_primary_dark"
+                android:textSize="10sp"
+                />
+
+        </LinearLayout>
+</androidx.cardview.widget.CardView>

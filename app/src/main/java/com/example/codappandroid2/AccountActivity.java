@@ -18,13 +18,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.codappandroid2.DbObjects.Clients;
+import com.example.codappandroid2.DbObjects.Individuals;
+import com.example.codappandroid2.DbObjects.LegalEntities;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AccountActivity extends AppCompatActivity {
     private DbConnection dbConnection;
-    private Clients loggedClients;
+    private Clients clientData;
+    Individuals individualData;
+    LegalEntities legalEntityData;
     private Button buttonExit, showDataButton;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -39,7 +43,10 @@ public class AccountActivity extends AppCompatActivity {
         });
 
         dbConnection = (DbConnection) getIntent().getSerializableExtra("dbConnection");
-        loggedClients = (Clients) getIntent().getSerializableExtra("Client");
+        clientData = (Clients) getIntent().getSerializableExtra("clientData");
+        individualData = (Individuals) getIntent().getSerializableExtra("individualData");
+        legalEntityData = (LegalEntities) getIntent().getSerializableExtra("legalEntityData");
+
         buttonExit = findViewById(R.id.exitbuttonAccountActivity);
 
         showDataButton = findViewById(R.id.showDataButton);
@@ -59,9 +66,9 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Данные для отображения в Spinner
-                if (loggedClients != null)
+                if (clientData != null)
                 {
-                    showAccountInfoWindow(loggedClients);
+                    showAccountInfoWindow(clientData, individualData, legalEntityData);
                 }
                 else Toast.makeText(AccountActivity.this, "Client пустой!", Toast.LENGTH_SHORT).show();
 
@@ -69,7 +76,7 @@ public class AccountActivity extends AppCompatActivity {
         });
 
     }
-    private void showAccountInfoWindow(Clients loggedClients) {
+    private void showAccountInfoWindow(Clients clientData, Individuals individualData, LegalEntities legalEntityData) {
         AlertDialog.Builder dialogue = new AlertDialog.Builder(this);
         dialogue.setTitle("Ваша информация");
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -78,11 +85,29 @@ public class AccountActivity extends AppCompatActivity {
 
         Spinner spinner = accountInfoWindow.findViewById(R.id.spinner);
         ArrayList<String> data = new ArrayList<>();
-        data.add(loggedClients.getLogin());
-        data.add(loggedClients.getPassword());
-        data.add(String.valueOf(loggedClients.getBonuses()));
-        data.add(String.valueOf(loggedClients.getTotalSpent()));
-
+        data.add(clientData.getLogin());
+        data.add(clientData.getPassword());
+        data.add(String.valueOf(clientData.getBonuses()));
+        data.add(String.valueOf(clientData.getTotalSpent()));
+        if (individualData != null) {
+            data.add(individualData.getFirstName());
+            data.add(individualData.getSecondName());
+            data.add(individualData.getThirdName());
+            data.add(individualData.getEmail());
+//            data.add(individualData.getPhoneNumber());
+//            data.add(String.valueOf(individualData.getBirthDay()));
+        }
+        if (legalEntityData != null) {
+            data.add(legalEntityData.getCompanyName());
+            data.add(legalEntityData.getContactName());
+            data.add(legalEntityData.getInn());
+//            data.add(legalEntityData.getOgrn());
+//            data.add(legalEntityData.getLicense());
+//            data.add(legalEntityData.getLegalAddress());
+//            data.add(legalEntityData.getRealAddress());
+            data.add(legalEntityData.getContactEmail());
+            data.add(legalEntityData.getContactNumber());
+        }
         // Адаптер для заполнения данных в Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AccountActivity.this, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

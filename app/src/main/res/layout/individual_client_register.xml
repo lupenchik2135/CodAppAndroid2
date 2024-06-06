@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rgIndividualWindow"
+    app:cardElevation="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/firstNameField"
+            android:hint="Имя"
+            android:inputType="text"
+            android:text=""
+            android:textColor="@color/design_default_color_primary"
+            android:textColorHint="@color/design_default_color_primary_dark"
+            android:textSize="20sp"
+
+            />
+
+        <EditText
+            android:id="@+id/secondNameField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Фамилия"
+            android:inputType="text"
+            android:text=""
+            android:textColor="@color/design_default_color_primary"
+            android:textColorHint="@color/design_default_color_primary_dark"
+            android:textSize="20sp"
+
+            />
+        <EditText
+            android:id="@+id/thirdNameField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Отчество"
+            android:inputType="text"
+            android:text=""
+            android:textColor="@color/design_default_color_primary"
+            android:textColorHint="@color/design_default_color_primary_dark"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/emailField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Почта"
+            android:inputType="textEmailAddress"
+            android:text=""
+            android:textColor="@color/design_default_color_primary"
+            android:textColorHint="@color/design_default_color_primary_dark"
+            android:textSize="20sp"
+            />
+<!--        <EditText-->
+<!--            android:id="@+id/phoneNumberField"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Номер телефона"-->
+<!--            android:inputType="phone"-->
+<!--            android:text=""-->
+<!--            android:textColor="@color/design_default_color_primary"-->
+<!--            android:textColorHint="@color/design_default_color_primary_dark"-->
+<!--            android:textSize="20sp"-->
+<!--            />-->
+<!--        <EditText-->
+<!--            android:id="@+id/birthDayField"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Дата рождения"-->
+<!--            android:inputType="date"-->
+<!--            android:text=""-->
+<!--            android:textColor="@color/design_default_color_primary"-->
+<!--            android:textColorHint="@color/design_default_color_primary_dark"-->
+<!--            android:textSize="20sp"-->
+<!--            />-->
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
