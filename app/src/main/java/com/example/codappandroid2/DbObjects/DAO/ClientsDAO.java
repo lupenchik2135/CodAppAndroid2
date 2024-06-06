@@ -1,6 +1,6 @@
 package com.example.codappandroid2.DbObjects.DAO;
 
-import com.example.codappandroid2.DbObjects.Client;
+import com.example.codappandroid2.DbObjects.Clients;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -19,8 +19,8 @@ public class ClientsDAO {
     }
 
     //получение Client из строки ResultSet
-    private Client getClientFromRS(ResultSet rs) throws SQLException {
-        Client result = new Client();
+    private Clients getClientFromRS(ResultSet rs) throws SQLException {
+        Clients result = new Clients();
 
         result.setId(rs.getInt("id"));
         result.setLogin(rs.getString("login"));
@@ -33,8 +33,8 @@ public class ClientsDAO {
     }
 
     //получение Client по id
-    public Client getClient(int id) {
-        Client result = null;
+    public Clients getClient(int id) {
+        Clients result = null;
         try {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM clients WHERE id=?");
             ps.setInt(1, id);
@@ -52,8 +52,8 @@ public class ClientsDAO {
     }
 
     //получение списка всего Client
-    public List<Client> getClientList() {
-        List<Client> result = new ArrayList<Client>();
+    public List<Clients> getClientList() {
+        List<Clients> result = new ArrayList<Clients>();
         try {
             ResultSet rs = con.createStatement().executeQuery("SELECT * FROM clients");
             while (rs.next()) {
@@ -75,12 +75,12 @@ public class ClientsDAO {
             cs.setString(2, password);
             cs.execute();
 
-            // Получить уведомления
-//            SQLWarning warning = cs.getWarnings();
-//            if (warning != null) {
-//                System.out.println("Получено уведомление: " + warning.getMessage());
-//                return warning;
-//            }
+//             Получить уведомления
+            SQLWarning warning = cs.getWarnings();
+            if (warning != null) {
+                System.out.println("Получено уведомление: " + warning.getMessage());
+                return false;
+            }
             cs.close();
             return true;
         } catch (SQLException e) {
@@ -111,8 +111,8 @@ public class ClientsDAO {
 //        return result;
 //    }
 
-    public Client loginClient(String login, String password) {
-        Client client = new Client();;
+    public Clients loginClient(String login, String password) {
+        Clients clients = new Clients();;
 
         try {
 //            String query = "SELECT id, login, password, totalSpent, bonusStatus, bonuses, managerId FROM loginclientfunction(?, ?)";
@@ -123,14 +123,14 @@ public class ClientsDAO {
 
             ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
-                client.setId(resultSet.getInt("id"));
-                client.setLogin(login);
-                client.setPassword(password);
-                client.setTotalSpent(resultSet.getFloat("totalSpent"));
+                clients.setId(resultSet.getInt("id"));
+                clients.setLogin(login);
+                clients.setPassword(password);
+                clients.setTotalSpent(resultSet.getFloat("totalSpent"));
 //                client.setBonusStatus(resultSet.getString("bonusStatus"));
-                client.setBonuses(resultSet.getFloat("bonuses"));
-                client.setManagerId(resultSet.getInt("managerId"));
-            }else client = null;
+                clients.setBonuses(resultSet.getFloat("bonuses"));
+                clients.setManagerId(resultSet.getInt("managerId"));
+            }else clients = null;
 
             resultSet.close();
             ps.close();
@@ -138,7 +138,7 @@ public class ClientsDAO {
             e.printStackTrace();
         }
 
-        return client;
+        return clients;
     }
     //удаление
     public void deleteClient(int id) {

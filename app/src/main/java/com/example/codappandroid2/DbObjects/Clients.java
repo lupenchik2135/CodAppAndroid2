@@ -2,7 +2,7 @@ package com.example.codappandroid2.DbObjects;
 
 import java.io.Serializable;
 
-public class Client implements Serializable {
+public class Clients implements Serializable {
     private int id;
     private String login;
     private String password;

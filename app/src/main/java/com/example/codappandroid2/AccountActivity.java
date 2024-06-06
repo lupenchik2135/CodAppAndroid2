@@ -2,15 +2,11 @@ package com.example.codappandroid2;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,16 +17,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.codappandroid2.DbObjects.Client;
-import com.example.codappandroid2.DbObjects.DAO.ClientsDAO;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.codappandroid2.DbObjects.Clients;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AccountActivity extends AppCompatActivity {
     private DbConnection dbConnection;
-    private Client loggedClient;
+    private Clients loggedClients;
     private Button buttonExit, showDataButton;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -45,7 +39,7 @@ public class AccountActivity extends AppCompatActivity {
         });
 
         dbConnection = (DbConnection) getIntent().getSerializableExtra("dbConnection");
-        loggedClient = (Client) getIntent().getSerializableExtra("Client");
+        loggedClients = (Clients) getIntent().getSerializableExtra("Client");
         buttonExit = findViewById(R.id.exitbuttonAccountActivity);
 
         showDataButton = findViewById(R.id.showDataButton);
@@ -54,6 +48,8 @@ public class AccountActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     dbConnection.getConnection().close();
+                    finish(); // закрыть текущую активность
+                    System.exit(0); // завершить работу приложения
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -63,9 +59,9 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Данные для отображения в Spinner
-                if (loggedClient != null)
+                if (loggedClients != null)
                 {
-                    showAccountInfoWindow(loggedClient);
+                    showAccountInfoWindow(loggedClients);
                 }
                 else Toast.makeText(AccountActivity.this, "Client пустой!", Toast.LENGTH_SHORT).show();
 
@@ -73,7 +69,7 @@ public class AccountActivity extends AppCompatActivity {
         });
 
     }
-    private void showAccountInfoWindow(Client loggedClient) {
+    private void showAccountInfoWindow(Clients loggedClients) {
         AlertDialog.Builder dialogue = new AlertDialog.Builder(this);
         dialogue.setTitle("Ваша информация");
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -82,10 +78,10 @@ public class AccountActivity extends AppCompatActivity {
 
         Spinner spinner = accountInfoWindow.findViewById(R.id.spinner);
         ArrayList<String> data = new ArrayList<>();
-        data.add(loggedClient.getLogin());
-        data.add(loggedClient.getPassword());
-        data.add(String.valueOf(loggedClient.getBonuses()));
-        data.add(String.valueOf(loggedClient.getTotalSpent()));
+        data.add(loggedClients.getLogin());
+        data.add(loggedClients.getPassword());
+        data.add(String.valueOf(loggedClients.getBonuses()));
+        data.add(String.valueOf(loggedClients.getTotalSpent()));
 
         // Адаптер для заполнения данных в Spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(AccountActivity.this, android.R.layout.simple_spinner_item, data);

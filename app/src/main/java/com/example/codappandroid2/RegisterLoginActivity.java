@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -20,8 +19,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.codappandroid2.DbObjects.Client;
+import com.example.codappandroid2.DbObjects.Clients;
 import com.example.codappandroid2.DbObjects.DAO.ClientsDAO;
+import com.example.codappandroid2.DbObjects.Individuals;
+import com.example.codappandroid2.DbObjects.LegalEntities;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.sql.SQLException;
@@ -78,6 +79,8 @@ public class RegisterLoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     dbConnection.getConnection().close();
+                    finish(); // закрыть текущую активность
+                    System.exit(0); // завершить работу приложения
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -116,49 +119,46 @@ public class RegisterLoginActivity extends AppCompatActivity {
                     return;
                 }
                 //регистрация пользователя
-                Client loginClient = clientsDAO.loginClient(login.getText().toString(), password.getText().toString());
+                Clients loginClients = clientsDAO.loginClient(login.getText().toString(), password.getText().toString());
 
-                if (loginClient == null) {
+                if (loginClients == null) {
                     Snackbar.make(rgWindow, "Ошибка!", Snackbar.LENGTH_SHORT).show();
                     return;
                 } else {
-                    Snackbar.make(rgWindow, "Добро пожаловать!" + loginClient.getId(), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(rgWindow, "Добро пожаловать!" + loginClients.getId(), Snackbar.LENGTH_SHORT).show();
                     // Создаем Intent
                     Intent intent = new Intent(RegisterLoginActivity.this, AccountActivity.class);
 
                     // Передаем dbConnection и Client
                     intent.putExtra("dbConnection", dbConnection);
-                    intent.putExtra("Client", loginClient);
+                    intent.putExtra("Client", loginClients);
                     startActivity(intent);
                     finish();
                 }
-
-
             }
         });
-
         dialogue.show();
     }
 
     private void showRegisterWindow() {
-        AlertDialog.Builder dialogue = new AlertDialog.Builder(this);
-        dialogue.setTitle("Зарегистрироваться");
-        dialogue.setMessage("Введите данные для регистрации");
+        AlertDialog.Builder dialogueClient = new AlertDialog.Builder(this);
+        dialogueClient.setTitle("Зарегистрироваться");
+        dialogueClient.setMessage("Введите данные для регистрации");
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View registerWindow = inflater.inflate(R.layout.register_window, null);
-        dialogue.setView(registerWindow);
+        dialogueClient.setView(registerWindow);
         final EditText login = registerWindow.findViewById(R.id.loginField);
         final EditText password = registerWindow.findViewById(R.id.passwordField);
 
-        dialogue.setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
+        dialogueClient.setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 dialogInterface.dismiss();
             }
         });
 
-        dialogue.setPositiveButton("Принять", new DialogInterface.OnClickListener() {
+        dialogueClient.setPositiveButton("Принять", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
                 if (TextUtils.isEmpty(login.getText().toString())) {
@@ -176,18 +176,24 @@ public class RegisterLoginActivity extends AppCompatActivity {
                     Snackbar.make(rgWindow, "Ошибка!", Snackbar.LENGTH_SHORT).show();
                     return;
                 } else {
-                    Snackbar.make(rgWindow, "Пользователь добавлен!", Snackbar.LENGTH_SHORT).show();
-                    startActivity(new Intent(RegisterLoginActivity.this, AccountActivity.class));
+                    Clients clientData = clientsDAO.loginClient(login.getText().toString(), password.getText().toString());
+                    Snackbar.make(rgWindow, "Введите остальные данные!", Snackbar.LENGTH_SHORT).show();
+                    // Создаем Intent
+                    Intent intent = new Intent(RegisterLoginActivity.this, ChooseClientTypeActivity.class);
+
+                    // Передаем dbConnection и clientsDAO
+                    intent.putExtra("dbConnection", dbConnection);
+                    intent.putExtra("clientData", clientData);
+                    startActivity(intent);
                 }
 
 
             }
         });
 
-        dialogue.show();
+        dialogueClient.show();
     }
-    public void setDbConnection(DbConnection dbConnection)
-    {
-        this.dbConnection = dbConnection;
-    }
+
+
+
 }
